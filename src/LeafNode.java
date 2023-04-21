@@ -72,6 +72,17 @@ public class LeafNode<K extends Comparable<K>, V> implements INode<K, V> {
     }
 
     @Override
+    public void put(K key, V value) {
+        int i = 0;
+        while (i < keys.size() && keys.get(i).compareTo(key) < 0) {
+            i++;
+        }
+        keys.add(i, key);
+        values.add(i, value);
+    }
+
+
+    @Override
     public List<INode<K, V>> split() {
         int mid = keys.size() / 2;
         LeafNode<K, V> newLeaf = new LeafNode<>(order);

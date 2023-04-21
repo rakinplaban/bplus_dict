@@ -6,6 +6,14 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
     private List<K> keys;
     private List<INode<K, V>> children;
 
+    private int getChildIndex(K key) {
+        int i = 0;
+        while (i < keys.size() && key.compareTo(keys.get(i)) >= 0) {
+            i++;
+        }
+        return i;
+    }
+
     public InnerNode(int order) {
         this.keys = new ArrayList<>(order);
         this.children = new ArrayList<>(order + 1);
@@ -23,6 +31,24 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
     public List<INode<K, V>> getChildren() {
         return children;
     }
+
+    public List<K> getKeys() {
+        return keys;
+    }
+
+    @Override
+    public void put(K key, V value) {
+        int i = getChildIndex(key);
+        INode<K, V> child = children.get(i);
+        child.put(key, value);
+        if (child.isOverflow()) {
+            List<INode<K, V>> newChildren = child.split();
+            keys.add(i, ((InnerNode<K, V>) newChildren.get(0)).getKeys().get(0));
+            children.remove(i);
+            children.addAll(i, newChildren);
+        }
+    }
+
 
     @Override
     public void insert(K key, V value) {
