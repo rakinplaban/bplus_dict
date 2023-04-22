@@ -14,7 +14,7 @@ public class LeafNode<K extends Comparable<K>, V> implements INode<K, V> {
         this.next = null;
         this.order = order;
     }
-
+    @Override
     public List<K> getKeys() {
         return keys;
     }
@@ -29,6 +29,11 @@ public class LeafNode<K extends Comparable<K>, V> implements INode<K, V> {
 
     public void setNext(LeafNode<K, V> next) {
         this.next = next;
+    }
+
+    @Override
+    public int getOrder() {
+        return order;
     }
 
     public boolean isOverflow() {
@@ -72,6 +77,17 @@ public class LeafNode<K extends Comparable<K>, V> implements INode<K, V> {
     }
 
     @Override
+    public void put(K key, V value) {
+        int i = 0;
+        while (i < keys.size() && keys.get(i).compareTo(key) < 0) {
+            i++;
+        }
+        keys.add(i, key);
+        values.add(i, value);
+    }
+
+
+    @Override
     public List<INode<K, V>> split() {
         int mid = keys.size() / 2;
         LeafNode<K, V> newLeaf = new LeafNode<>(order);
@@ -91,7 +107,15 @@ public class LeafNode<K extends Comparable<K>, V> implements INode<K, V> {
         return result;
     }
 
+    @Override
+    public void addChild(INode<K, V> child) {
+        throw new UnsupportedOperationException("LeafNode does not have children");
+    }
 
+    @Override
+    public List<INode<K, V>> getChildren() {
+        throw new IllegalStateException("Leaf Node does not have children");
+    }
     public void remove(K key) {
         int i = getChildIndex(key);
         if (i < keys.size() && keys.get(i).equals(key)) {
