@@ -6,6 +6,8 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
     private List<K> keys;
     private List<INode<K, V>> children;
 
+    private int order;
+
     private int getChildIndex(K key) {
         int i = 0;
         while (i < keys.size() && key.compareTo(keys.get(i)) >= 0) {
@@ -28,10 +30,7 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
         return keys.size();
     }
 
-    public List<INode<K, V>> getChildren() {
-        return children;
-    }
-
+    @Override
     public List<K> getKeys() {
         return keys;
     }
@@ -49,6 +48,10 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
         }
     }
 
+    @Override
+    public int getOrder() {
+        return order;
+    }
 
     @Override
     public void insert(K key, V value) {
@@ -57,11 +60,12 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
         child.insert(key, value);
         if (child.isOverflow()) {
             List<INode<K, V>> newChildren = child.split();
-            keys.add(i, newChildren.get(0).getKeys().get(0));
+            keys.add(i, ((InnerNode<K, V>) newChildren.get(0)).getKeys().get(0));
             children.remove(i);
             children.addAll(i, newChildren);
         }
     }
+
 
     @Override
     public V get(K key) {
@@ -126,8 +130,25 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
 
     @Override
     public boolean isOverflow() {
+
         return keys.size() >= getOrder();
     }
+    @Override
+    public void addChild(INode<K, V> child) {
+        children.add(child);
+    }
+
+    @Override
+    public List<INode<K, V>> getChildren() {
+        return children;
+    }
+
+    public void addChildren(List<INode<K, V>> newChildren) {
+        for (INode<K, V> child : newChildren) {
+            addChild(child);
+        }
+    }
+
 
     @Override
     public boolean isUnderflow() {
@@ -137,7 +158,7 @@ public class InnerNode<K extends Comparable<K>, V> implements INode<K, V> {
     @Override
     public List<INode<K, V>> split() {
         int mid = keys.size() / 2;
-        InnerNode<K, V> newInner = new InnerNode<>(int order);
+        InnerNode<K, V> newInner = new InnerNode<>(order);
         newInner.keys.addAll(keys.subList(mid + 1, keys.size()));
         newInner.children.addAll(children.subList(mid + 1, children.size()));
         keys.subList(mid, keys.size()).clear();
