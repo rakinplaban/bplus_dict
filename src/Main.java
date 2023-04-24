@@ -8,7 +8,7 @@ public class Main {
         dictionary.insert("banana", "a long curved fruit which grows in clusters");
         dictionary.insert("carrot", "a long, thin, orange vegetable");
 
-        System.out.print("Press 1 to insert a new word.\nPress 2 to find out a word\n");
+        System.out.print("Press 1 to insert a new word.\nPress 2 to find out a word.\nPress 3 to delete a word.\n");
         int option = enter.nextInt();
 
         switch (option){
@@ -21,19 +21,19 @@ public class Main {
                 dictionary.insert(word,meaning);
                 break;
             case 2:
-                System.out.println("Enter a word you want to find out!");
+                System.out.print("Enter a word you want to find out: ");
                 String key_in = enter.next();
                 String definition = dictionary.search(key_in);
 
                 System.out.println("The definition of " + key_in + " is: " + definition);
-
-
+                
+                break;
+            case 3:
+                System.out.print("Which word you want to delete from dictionary? ");
+                String key_dlt = enter.next();
+                dictionary.remove(key_dlt);
 
         }
-
-
-
-
 
     }
 }

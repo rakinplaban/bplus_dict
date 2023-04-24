@@ -1,6 +1,7 @@
 import java.util.*;
 import java.lang.Object.*;
 import java.io.*;
+import java.nio.file.Files;
 
 public class BPlusTree<K extends Comparable<K>, V> {
     private int order; // maximum number of keys in each node
@@ -49,12 +50,12 @@ public class BPlusTree<K extends Comparable<K>, V> {
     }
 
     // remove the key-value pair associated with a key
-    public void remove(K key) {
-        root.remove(key);
-        if (root instanceof InnerNode && root.getChildren().size() == 1) {
-            root = (INode) root.getChildren().get(0);
-        }
-    }
+//    public void remove(K key) {
+//        root.remove(key);
+//        if (root instanceof InnerNode && root.getChildren().size() == 1) {
+//            root = (INode) root.getChildren().get(0);
+//        }
+//    }
 
 
     public void insert(K key, V value) {
@@ -84,7 +85,7 @@ public class BPlusTree<K extends Comparable<K>, V> {
                     K fileKey = (K) parts[0].trim();
                     V fileValue = (V) parts[1].trim();
                     if (fileKey.equals(key)) {
-                        if (fileValue == null) {
+                        if (fileValue == "") {
                             throw new NullPointerException("This word has no meaning!");
                         } else {
                             scanner.close();
@@ -100,5 +101,54 @@ public class BPlusTree<K extends Comparable<K>, V> {
         }
         return null;
     }
+
+    public void remove(K key) {
+        int lineNumber = searchLine(key);
+        if (lineNumber != -1) {
+            try {
+                // Read the file
+                File file = new File("wordlist.txt");
+                List<String> lines = Files.readAllLines(file.toPath());
+
+                // Remove the line at the specified line number
+                lines.remove(lineNumber);
+
+                // Write the modified file back to disk
+                Files.write(file.toPath(), lines);
+                System.out.println("Word deleted successfully!");
+            } catch (IOException e) {
+                System.out.println("Failed to remove word: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Word not found!");
+        }
+    }
+
+    private int searchLine(K key) {
+        try {
+            Scanner scanner = new Scanner(new File("wordlist.txt"));
+            int lineNumber = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    K fileKey = (K) parts[0];
+                    if (fileKey.toString().trim().equals(key.toString().trim())) {
+                        scanner.close();
+                        return lineNumber;
+                    }
+                }
+                lineNumber++;
+            }
+            scanner.close();
+            return -1;  // Key not found
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+            return -1;
+        }
+    }
+
+
+
 
 }
