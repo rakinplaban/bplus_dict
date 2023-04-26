@@ -4,9 +4,6 @@ public class Main {
     public static void main(String[] args) {
         BPlusTree<String, String> dictionary = new BPlusTree<>(5);
         Scanner enter = new Scanner(System.in);
-        dictionary.insert("apple", "a fruit with a red or green skin and a round shape");
-        dictionary.insert("banana", "a long curved fruit which grows in clusters");
-        dictionary.insert("carrot", "a long, thin, orange vegetable");
 
         System.out.print("Press 1 to insert a new word.\nPress 2 to find out a word.\nPress 3 to delete a word.\n");
         int option = enter.nextInt();
