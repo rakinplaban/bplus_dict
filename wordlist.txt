@@ -1,13 +1,4 @@
-banana : a long curved fruit which grows in clusters
-apple : a fruit with a red or green skin and a round shape
-banana : a long curved fruit which grows in clusters
-carrot : a long, thin, orange vegetable
-apple : a fruit with a red or green skin and a round shape
-banana : a long curved fruit which grows in clusters
-carrot : a long, thin, orange vegetable
-apple : a fruit with a red or green skin and a round shape
-banana : a long curved fruit which grows in clusters
-carrot : a long, thin, orange vegetable
-apple : a fruit with a red or green skin and a round shape
-banana : a long curved fruit which grows in clusters
-carrot : a long, thin, orange vegetable
+apple : a fruit with a red or green skin and a round shape.
+banana : a long curved fruit which grows in clusters.
+carrot : a long, thin, orange vegetable.
+tomato : A red round juicy vegetable.
