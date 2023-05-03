@@ -3,7 +3,6 @@ public interface INode<K extends Comparable<K>, V> {
     void insert(K key, V value);
     V get(K key);
 
-    void put(K key, V value);
     List<K> getKeys();
 
     int getOrder();

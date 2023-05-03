@@ -24,26 +24,6 @@ public class BPlusTree<K extends Comparable<K>, V> {
         return (LeafNode<K, V>) node;
     }
 
-    // put a key-value pair into the tree
-
-    public void put(K key, V value) {
-        if (root == null) {
-            root = new LeafNode<>(order);
-        }
-        root.put(key, value);
-        if (root.isOverflow()) {
-            List<INode<K, V>> newNodes = root.split();
-            INode<K, V> newRoot = new InnerNode<>(order);
-            for (INode<K, V> node : newNodes) {
-                newRoot.addChild(node);
-            }
-            newRoot.addChild(root);
-            root = newRoot;
-        }
-    }
-
-
-
     // get the value associated with a key
     public V get(K key) {
         return (V) root.get(key);
